@@ -1,0 +1,37 @@
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Environment secrets
+.env
+.env.local
+
+# OS / IDE
+.DS_Store
+.idea/
+.vscode/
+
+# Generated outputs (keep directory)
+outputs/*
+!outputs/.gitkeep
+data/generated/*
+!data/generated/.gitkeep
+
+# Node (if added later)
+node_modules/
+frontend/dist/

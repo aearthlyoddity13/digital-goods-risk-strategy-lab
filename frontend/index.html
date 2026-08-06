@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Merchant Credit &amp; Reserve Decision Engine</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./config.js"></script>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="masthead">
+        <p class="eyebrow">Portfolio laboratory · Phase 0 baseline</p>
+        <h1 class="brand">Merchant Credit &amp; Reserve Decision Engine</h1>
+        <p class="lede">
+          Explainable onboarding and periodic-review decisions for digital-product merchants —
+          approval action, expected-loss economics, and rolling-reserve recommendation.
+        </p>
+        <aside class="notice" role="note">
+          <strong>Public-data notice.</strong> Synthetic demonstration merchants only. Do not
+          upload real personal, customer, or confidential merchant data. Baseline outputs are
+          <em>illustrative</em> until Phase 2 validation evidence exists.
+        </aside>
+      </header>
+
+      <main class="layout">
+        <section class="panel" aria-labelledby="controls-heading">
+          <h2 id="controls-heading">01 · Sample merchant</h2>
+          <label for="merchant-select">Load example</label>
+          <select id="merchant-select"></select>
+          <div class="controls">
+            <button type="button" class="primary" id="run-decision">Run decision</button>
+            <button type="button" id="check-health">Check API health</button>
+          </div>
+          <p class="status-line" id="status" aria-live="polite"></p>
+          <div id="error" class="error-box" hidden></div>
+          <div id="fallback" class="fallback" aria-live="polite"></div>
+        </section>
+
+        <section class="panel" aria-labelledby="decision-heading" id="result-panel">
+          <h2 id="decision-heading">02 · Decision</h2>
+          <p class="status-line" id="empty-state">Select a sample and run a decision.</p>
+          <div id="decision-root" hidden></div>
+        </section>
+      </main>
+
+      <footer>
+        Model <span id="footer-model">scorecard-0.1.0</span> · Policy
+        <span id="footer-policy">policy-0.1.0</span> · API base
+        <code id="footer-api"></code>
+      </footer>
+    </div>
+    <script src="./app.js" type="module"></script>
+  </body>
+</html>

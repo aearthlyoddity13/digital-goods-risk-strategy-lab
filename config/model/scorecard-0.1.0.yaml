@@ -1,0 +1,30 @@
+model_version: scorecard-0.1.0
+# Component weights sum to 1.0; each component scored 0–100 (higher = riskier)
+weights:
+  viability: 0.20
+  payment_quality: 0.30
+  growth_volatility: 0.15
+  product_structure: 0.15
+  behavior: 0.10
+  geography: 0.10
+# Logistic PD calibration: pd = 1 / (1 + exp(-(a + b * score)))
+pd_calibration:
+  intercept: -5.0
+  slope: 0.07
+# Base LGD by industry subtype
+lgd_base:
+  game_publisher: 0.45
+  short_form_entertainment: 0.50
+  web_fiction: 0.40
+  ai_application: 0.55
+  subscription_product: 0.35
+  virtual_items: 0.60
+  other_digital: 0.50
+exposure:
+  # EAD ≈ projected_monthly_tpv * (exposure_days / 30)
+  default_exposure_days: 21
+  refund_window_weight: 0.35
+assumptions:
+  - "Baseline scorecard coefficients are illustrative expert priors, not production-fitted."
+  - "Synthetic demonstration data only; not observed platform performance."
+  - "Validation status: illustrative until Phase 2 out-of-time evidence exists."

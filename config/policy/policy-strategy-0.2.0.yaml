@@ -1,0 +1,85 @@
+policy_version: policy-strategy-0.2.0
+methodology_version: strategy-0.2.0-draft
+disclaimer: >
+  Demonstration data: aggregated and synthetic. No confidential merchant,
+  customer or payment-platform data is used. Thresholds are illustrative.
+
+# Illustrative score bands (0–100, higher = more concern)
+bands:
+  approve_max: 29
+  controls_max: 54
+  review_max: 74
+  # above review_max → decline on score
+
+weights:
+  payment_quality: 0.28
+  growth_volatility: 0.14
+  structure_exposure: 0.18
+  content_integrity: 0.18
+  maturity_confidence: 0.12
+  geography: 0.10
+
+hard_rules:
+  decline_dispute_rate: 0.05
+  decline_fraud_loss_proxy: 0.06
+  review_content_risk: 0.70
+  decline_content_risk: 0.90
+  review_if_data_confidence_low_and_volume_above: 100000
+  review_prepaid_ratio_above: 0.85
+
+interactions:
+  low_ticket_max: 3.0
+  high_frequency_min: 15
+  low_ticket_high_frequency_uplift: 8
+  growth_high_min: 0.5
+  young_merchant_max_months: 12
+  growth_young_uplift: 10
+  transferability_uplift: 7
+  subscription_complaint_uplift: 6
+  prepaid_ratio_uplift_threshold: 0.5
+  prepaid_ratio_uplift: 8
+  content_platform_uplift_threshold: 0.55
+  content_platform_dependency_min: 0.6
+  content_platform_uplift: 12
+
+controls:
+  approve_default: [standard_monitoring]
+  controls_default:
+    - enhanced_monitoring
+    - rolling_reserve
+  review_default:
+    - manual_underwriting_review
+    - enhanced_monitoring
+    - additional_merchant_information
+  content_elevated_min: 0.45
+  content_controls:
+    - content_review
+    - enhanced_monitoring
+  subscription_complaint_min: 0.03
+  subscription_share_min: 0.5
+  subscription_controls:
+    - subscription_practice_review
+  transferability_controls:
+    - proof_of_fulfillment_review
+    - settlement_delay
+  growth_young_controls:
+    - processing_volume_limit
+    - settlement_delay
+  cross_border_high_min: 0.6
+  cross_border_controls:
+    - geographic_restriction
+    - enhanced_monitoring
+
+reserve:
+  # Illustrative rate bands by posture
+  low: { min_rate: 0.0, max_rate: 0.05, holding_days_min: 7, holding_days_max: 14 }
+  moderate: { min_rate: 0.05, max_rate: 0.12, holding_days_min: 14, holding_days_max: 30 }
+  elevated: { min_rate: 0.10, max_rate: 0.20, holding_days_min: 30, holding_days_max: 60 }
+  severe: { min_rate: 0.15, max_rate: 0.30, holding_days_min: 60, holding_days_max: 90 }
+  prepaid_ratio_boost: 0.03
+  content_high_boost: 0.04
+
+assumptions:
+  - Thresholds are illustrative expert priors for education, not production-fitted.
+  - Synthetic aggregated scenarios only.
+  - Not for real merchant decisions.

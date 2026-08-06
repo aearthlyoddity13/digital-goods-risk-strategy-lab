@@ -1,0 +1,346 @@
+/* Editorial research laboratory — Merchant Credit & Reserve Decision Engine */
+
+:root {
+  --bg: #f3efe8;
+  --bg-accent: #ebe4d8;
+  --ink: #1c2430;
+  --ink-muted: #5a6573;
+  --rule: #c9c0b2;
+  --accent: #9a3b3b;
+  --accent-soft: #c46a5a;
+  --approve: #2f5d4a;
+  --controls: #8a5a2b;
+  --review: #6b4f7a;
+  --decline: #8b2e2e;
+  --mono: "IBM Plex Mono", "SF Mono", ui-monospace, monospace;
+  --sans: "Source Sans 3", "Source Sans Pro", "Segoe UI", sans-serif;
+  --serif: "Libre Baskerville", "Iowan Old Style", Georgia, serif;
+  --max: 72rem;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--sans);
+  font-size: 1.05rem;
+  line-height: 1.55;
+  color: var(--ink);
+  background:
+    radial-gradient(ellipse 80% 50% at 100% 0%, rgba(154, 59, 59, 0.06), transparent 55%),
+    linear-gradient(165deg, var(--bg) 0%, var(--bg-accent) 48%, #e7e0d4 100%);
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.35;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  z-index: -1;
+}
+
+a {
+  color: var(--accent);
+}
+
+.wrap {
+  width: min(100% - 2rem, var(--max));
+  margin-inline: auto;
+  padding-block: 2.5rem 4rem;
+}
+
+.masthead {
+  display: grid;
+  gap: 0.75rem;
+  padding-bottom: 1.75rem;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 2rem;
+  animation: rise 0.6s ease-out both;
+}
+
+.eyebrow {
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.brand {
+  font-family: var(--serif);
+  font-size: clamp(1.75rem, 4vw, 2.45rem);
+  font-weight: 400;
+  line-height: 1.2;
+  margin: 0;
+  max-width: 18ch;
+}
+
+.lede {
+  margin: 0;
+  max-width: 42rem;
+  color: var(--ink-muted);
+}
+
+.notice {
+  margin-top: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-left: 3px solid var(--accent);
+  background: rgba(255, 255, 255, 0.35);
+  font-size: 0.92rem;
+}
+
+.layout {
+  display: grid;
+  gap: 2rem;
+}
+
+@media (min-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr 1.15fr;
+    align-items: start;
+  }
+}
+
+.panel {
+  animation: rise 0.7s ease-out 0.08s both;
+}
+
+.panel h2 {
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  font-weight: 400;
+  margin: 0 0 1rem;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+button,
+.select-like {
+  font: inherit;
+  font-size: 0.95rem;
+  border: 1px solid var(--rule);
+  background: rgba(255, 255, 255, 0.55);
+  color: var(--ink);
+  padding: 0.55rem 0.9rem;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+button:hover,
+button:focus-visible {
+  border-color: var(--accent);
+  outline: 2px solid transparent;
+}
+
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+button.primary {
+  background: var(--ink);
+  color: var(--bg);
+  border-color: var(--ink);
+}
+
+button.primary:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+label {
+  display: block;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-bottom: 0.35rem;
+}
+
+select {
+  width: 100%;
+  font: inherit;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--rule);
+  background: rgba(255, 255, 255, 0.65);
+  margin-bottom: 1rem;
+}
+
+.status-line {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--ink-muted);
+  min-height: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.decision-card {
+  border-top: 1px solid var(--rule);
+  padding-top: 1.25rem;
+  animation: fade-in 0.45s ease both;
+}
+
+.decision-action {
+  font-family: var(--serif);
+  font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+  margin: 0 0 0.35rem;
+  letter-spacing: 0.02em;
+}
+
+.decision-action[data-action="APPROVE"] {
+  color: var(--approve);
+}
+.decision-action[data-action="APPROVE_WITH_CONTROLS"] {
+  color: var(--controls);
+}
+.decision-action[data-action="MANUAL_REVIEW"] {
+  color: var(--review);
+}
+.decision-action[data-action="DECLINE"] {
+  color: var(--decline);
+}
+
+.meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--ink-muted);
+  margin-bottom: 1.25rem;
+}
+
+.section-num {
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 1.25rem 0 0.4rem;
+}
+
+.econ-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: 0.75rem;
+}
+
+.econ-item {
+  padding: 0.65rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.econ-item span {
+  display: block;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.econ-item strong {
+  font-family: var(--mono);
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.reasons {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.reasons li {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.5rem;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid var(--rule);
+  font-size: 0.95rem;
+}
+
+.reasons .code {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--ink-muted);
+}
+
+.flags {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+}
+
+.assumptions {
+  font-size: 0.9rem;
+  color: var(--ink-muted);
+}
+
+.error-box {
+  border-left: 3px solid var(--decline);
+  padding: 0.75rem 1rem;
+  background: rgba(139, 46, 46, 0.08);
+}
+
+.fallback {
+  display: none;
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px dashed var(--rule);
+  font-size: 0.92rem;
+}
+
+.fallback.visible {
+  display: block;
+}
+
+footer {
+  margin-top: 3rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule);
+  font-size: 0.85rem;
+  color: var(--ink-muted);
+  animation: rise 0.8s ease-out 0.12s both;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
