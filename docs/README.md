@@ -30,6 +30,7 @@
 | [LIMITATIONS_AND_ETHICS.md](LIMITATIONS_AND_ETHICS.md) | Boundaries |
 | [ARCHITECTURE.md](ARCHITECTURE.md) | System design |
 | [API_SPECIFICATION.md](API_SPECIFICATION.md) | API contract |
+| [DEPLOYMENT_RENDER.md](DEPLOYMENT_RENDER.md) | HTTPS API deployment, CORS verification and portfolio connection |
 | [TEST_STRATEGY.md](TEST_STRATEGY.md) | Quality approach |
 | [PORTFOLIO_CASE_STUDY.md](PORTFOLIO_CASE_STUDY.md) | Case narrative |
 | [PORTFOLIO_PUBLICATION_PACKAGE.md](PORTFOLIO_PUBLICATION_PACKAGE.md) | Public page architecture, exact copy, motion and visibility contract |
