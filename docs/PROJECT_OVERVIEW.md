@@ -38,7 +38,7 @@ How should a payment platform evaluate and control emerging digital-goods mercha
 | Time | Path |
 |------|------|
 | 2 minutes | This overview → [PORTFOLIO_CASE_STUDY.md](PORTFOLIO_CASE_STUDY.md) |
-| 15 minutes | [RESEARCH_REPORT.md](RESEARCH_REPORT.md) + [DIGITAL_GOODS_RISK_TAXONOMY.md](DIGITAL_GOODS_RISK_TAXONOMY.md) |
+| 15 minutes | [SHORT_DRAMA_RISK_DEEP_DIVE.md](SHORT_DRAMA_RISK_DEEP_DIVE.md) or [AI_SERVICES_RISK_DEEP_DIVE.md](AI_SERVICES_RISK_DEEP_DIVE.md) |
 | Deep dive | [DECISION_POLICY.md](DECISION_POLICY.md), [CONTENT_RISK_FRAMEWORK.md](CONTENT_RISK_FRAMEWORK.md), interactive lab |
 | Engineering | [ARCHITECTURE.md](ARCHITECTURE.md), [API_SPECIFICATION.md](API_SPECIFICATION.md) |
 

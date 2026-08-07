@@ -19,7 +19,7 @@ for p in (str(ROOT), str(SRC)):
         sys.path.insert(0, p)
 
 from api.middleware.request_id import RequestIdMiddleware  # noqa: E402
-from api.routes import health, merchants  # noqa: E402
+from api.routes import health, merchants, strategy  # noqa: E402
 from api.schemas.decision import ErrorResponse  # noqa: E402
 from api.settings import get_settings  # noqa: E402
 
@@ -31,11 +31,11 @@ logging.basicConfig(
 )
 
 app = FastAPI(
-    title="Merchant Credit & Reserve Decision Engine",
-    version="0.1.0",
+    title="Digital Goods Merchant Risk Strategy Lab",
+    version="0.3.0",
     description=(
-        "Explainable API-first decision engine for digital-product merchants. "
-        "Synthetic demonstration data only. Baseline is illustrative until Phase 2 validation."
+        "Employer-neutral, explainable strategy demonstrator for direct-web digital-goods "
+        "merchants. Aggregated synthetic data only; not for production merchant decisions."
     ),
 )
 
@@ -43,6 +43,7 @@ app.add_middleware(RequestIdMiddleware)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origin_list,
+    allow_origin_regex=settings.cors_origin_regex,
     allow_credentials=True,
     allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["*"],
@@ -51,6 +52,7 @@ app.add_middleware(
 
 app.include_router(health.router)
 app.include_router(merchants.router)
+app.include_router(strategy.router)
 
 
 @app.exception_handler(RequestValidationError)

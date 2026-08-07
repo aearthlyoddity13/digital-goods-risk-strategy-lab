@@ -2,8 +2,8 @@
 
 Research-led strategy demonstrator for how payment platforms could evaluate **emerging digital-goods merchants** (short drama, web fiction, games, AI services, virtual goods)—without implying use of confidential processor or merchant data.
 
-**Status:** Phase 2 documentation foundation (repositioning from Sprint 0 credit/reserve engine).  
-**Data boundary:** Aggregated and synthetic demonstration data only.  
+**Status:** Interactive strategy-lab MVP with versioned synthetic scenarios and policy-posture simulation.
+**Data boundary:** Aggregated and synthetic demonstration data only.
 **Not:** A production underwriting model. Thresholds are illustrative. No predictive-accuracy claims.
 
 ## Central question
@@ -23,11 +23,11 @@ make test
 make run-api
 ```
 
-- API: http://127.0.0.1:8000 (Sprint 0 endpoints still present during transition)  
-- OpenAPI: http://127.0.0.1:8000/docs  
-- UI: `cd frontend && python3 -m http.server 5173`  
+- API: http://127.0.0.1:8000
+- OpenAPI: http://127.0.0.1:8000/docs
+- UI: `cd frontend && python3 -m http.server 5173`
 
-> Note: Phase 4 replaces the primary API with `/api/v1/assess` and related routes. Until then, legacy `POST /v1/merchants/decision` remains for regression.
+The interactive UI uses `/api/v1/archetypes`, `/api/v1/compare`, and `/api/v1/compare-postures`. Set the deployed API origin in `frontend/config.js` before embedding the lab in the portfolio. The legacy `POST /v1/merchants/decision` route remains temporarily for regression coverage.
 
 ## Documentation
 

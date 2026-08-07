@@ -1,7 +1,7 @@
 # Model card — Digital Goods Merchant Risk Strategy Lab
 
-**Methodology version:** `strategy-0.2.0-draft`  
-**Policy version:** `policy-strategy-0.2.0` (draft)  
+**Methodology version:** `strategy-0.4.0`
+**Policy version:** `balanced-growth-0.2.0`
 **Status:** Strategy demonstrator — not a production model
 
 ## Required disclosures
@@ -29,6 +29,8 @@ See [DATA_DICTIONARY.md](DATA_DICTIONARY.md). Primary outputs are decision, risk
 ## Methodology summary
 
 Interaction-aware rules and transparent score components configured in versioned YAML. Hard integrity and extreme-payment rules can override score bands. Reserve bands are illustrative policy outputs.
+
+AI-service inputs add aggregate service-credit reconciliation, renewal conduct, usage-meter integrity and account/API-key abuse mechanisms. Raw customer prompts, outputs, credentials, IP addresses and device records remain outside the model. See [RESEARCH_TO_MODEL_GAP_AUDIT.md](RESEARCH_TO_MODEL_GAP_AUDIT.md).
 
 ## Human oversight
 

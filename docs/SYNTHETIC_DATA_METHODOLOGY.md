@@ -21,11 +21,14 @@ Create transparent merchant **archetypes** and **multi-period scenarios** that i
 
 ## 3. Archetypes (target set)
 
+The active scenario catalog is [SYNTHETIC_SCENARIO_CATALOG.md](SYNTHETIC_SCENARIO_CATALOG.md). Primary payment flows are direct web payments; app-store billing is outside the modeled transaction scope.
+Initial numerical assumptions and expected balanced-growth decisions are documented in [SCENARIO_CALIBRATION_SPEC.md](SCENARIO_CALIBRATION_SPEC.md).
+
 | ID | Archetype | Behaviors illustrated |
 |----|-----------|----------------------|
-| `ARCH-DRAMA-COINS` | Early-stage short-drama app with coin unlocks | Low ticket, high frequency, prepaid coins |
+| `ARCH-DRAMA-COINS` | Early-stage short-drama web merchant with coin unlocks | Low ticket, high frequency, prepaid coins |
 | `ARCH-FICTION-CREATORS` | Established web-fiction with creator payouts | Subscriptions + creator payables |
-| `ARCH-GAME-GIFTING` | Mobile game with virtual currency and gifting | Transferability, ATO/gifting risk |
+| `ARCH-GAME-GIFTING` | Web game store with virtual currency and gifting | Transferability, ATO/gifting risk |
 | `ARCH-AI-SUB-TRIAL` | AI image service: free trial + monthly sub | Trial abuse, renewal disputes |
 | `ARCH-AI-API-USAGE` | Usage-based AI API | Volatile compute, volume spikes |
 | `ARCH-GROWTH-XBORDER` | High-growth cross-border digital merchant | Growth × thin history × corridors |

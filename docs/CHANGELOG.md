@@ -2,6 +2,63 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.6.0-research-model-alignment] — 2026-08-08
+
+- Added the research-to-model gap audit.
+- Added AI credit-ledger, renewal, metering, account/key-abuse and postpaid-exposure fields.
+- Added targeted controls, drivers and golden tests.
+- Advanced the methodology to `strategy-0.4.0`.
+
+## [0.5.0-ai-services-research] — 2026-08-07
+
+- Added the flagship AI subscriptions, credits, usage and account-abuse chapter.
+- Added supporting first-party product-structure and API-security evidence.
+- Linked AI payment mechanisms to AI-01–AI-03 decisions and control-release conditions.
+
+## [0.4.0-short-drama-research] — 2026-08-07
+
+- Added the flagship short-drama coin-system and post-consumption risk chapter.
+- Added supporting market, product-mechanics and digital-dispute evidence to the source register.
+- Linked research mechanisms to the implemented SD-01–SD-03 scenarios and release conditions.
+
+## [0.3.1-calibration] — 2026-08-07
+
+- Probability-weighted uncovered contingent exposure.
+- Ecosystem-adjusted posture selection including merchant liquidity burden.
+- Least-restrictive balanced-growth near-equivalence rule.
+- Implemented findings added to the portfolio case study.
+- Posture assumptions advanced to `postures-0.2.0`; 36 tests pass.
+
+## [0.3.0-strategy-slice] — 2026-08-07
+
+### Added
+
+- Employer-neutral research question tree, evidence register and indicator priorities.
+- Balanced-growth risk appetite and commercial objective.
+- Direct-web synthetic scenario catalog and numerical calibration specification.
+- Normalized and USD 1,000,000 illustrative commercial views.
+- Strategy-lab domain models, coin-ledger validation, assessment and commercial calculator.
+- `POST /api/v1/assess` and `GET /api/v1/methodology`.
+- Unit and API contract tests for the strategy-lab vertical slice.
+- Versioned YAML catalog generating eight scenarios across four periods (32 records).
+- `GET /api/v1/archetypes` and scenario-reference `POST /api/v1/compare`.
+- Golden-decision tests for combined stress mechanisms and balanced-growth manual review.
+- Versioned permissive, balanced-growth and conservative policy-effect assumptions.
+- `POST /api/v1/compare-postures` with risk-appetite-constrained recommendation logic.
+
+### Changed
+
+- Confirmed direct-web payment scope; app-store billing is excluded.
+- Confirmed purchased coins are non-expiring, non-transferable and non-cash-redeemable.
+- API public title now reflects the Digital Goods Merchant Risk Strategy Lab.
+
+### Verification
+
+- Ruff formatting and lint passed.
+- Mypy passed for the new strategy-lab source and route.
+- Full suite: 31 tests passed.
+- `git diff --check` passed.
+
 ## [0.2.0-docs] — 2026-08-06
 
 ### Changed

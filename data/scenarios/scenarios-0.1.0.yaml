@@ -1,0 +1,137 @@
+catalog_version: scenarios-0.1.0
+methodology_version: strategy-0.4.0
+disclaimer: >
+  Demonstration data: aggregated and synthetic. No confidential merchant,
+  customer or payment-platform data is used.
+
+defaults:
+  monthly_attempted_payment_volume: 1000000
+  payment_approval_rate: 0.96
+  successful_fulfillment_rate: 0.99
+  average_ticket_size: 20
+  mom_volume_growth: 0.10
+  refund_rate: 0.02
+  dispute_rate: 0.0055
+  fraud_loss_rate: 0.0020
+  complaint_rate: 0.0030
+  cross_border_share: 0.20
+  prepaid_exposure_ratio: 0.10
+  content_integrity_indicator: 0.20
+  platform_dependency: 0.35
+  service_reliability: 0.97
+  support_response_within_sla: 0.90
+  data_confidence_level: medium
+  virtual_asset_transferability: false
+  post_consumption_dispute_share: 0.20
+  renewal_dispute_share: 0.00
+  renewal_disclosure_score: 1.00
+  usage_meter_reconciliation_rate: 1.00
+  anomalous_usage_share: 0.00
+  account_or_key_compromise_indicator: 0.00
+  postpaid_usage_exposure_ratio: 0.00
+  available_merchant_balance: 150000
+  current_reserve_rate: 0.0
+  current_holding_days: 0
+
+scenarios:
+  - scenario_key: SD-01
+    merchant_id: SYN-SD-01
+    name: Controlled short-drama launch
+    merchant_category: short_drama
+    merchant_age_months: 6
+    base:
+      average_ticket_size: 12
+      payment_approval_rate: 0.955
+      cross_border_share: 0.25
+      platform_dependency: 0.35
+      support_response_within_sla: 0.92
+      available_merchant_balance: 100000
+    periods:
+      P0_BASELINE: {mom_volume_growth: 0.18, refund_rate: 0.020, dispute_rate: 0.0060, fraud_loss_rate: 0.0025, prepaid_exposure_ratio: 0.18, data_confidence_level: medium}
+      P1_EARLY_SIGNAL: {monthly_attempted_payment_volume: 1200000, payment_approval_rate: 0.953, mom_volume_growth: 0.20, refund_rate: 0.021, dispute_rate: 0.0065, fraud_loss_rate: 0.0028, prepaid_exposure_ratio: 0.21}
+      P2_STRESS: {monthly_attempted_payment_volume: 1450000, payment_approval_rate: 0.948, mom_volume_growth: 0.21, refund_rate: 0.025, dispute_rate: 0.0082, fraud_loss_rate: 0.0036, prepaid_exposure_ratio: 0.26, complaint_rate: 0.006}
+      P3_OUTCOME: {monthly_attempted_payment_volume: 1550000, payment_approval_rate: 0.954, mom_volume_growth: 0.07, refund_rate: 0.021, dispute_rate: 0.0058, fraud_loss_rate: 0.0022, prepaid_exposure_ratio: 0.20, data_confidence_level: high}
+
+  - scenario_key: SD-02
+    merchant_id: SYN-SD-02
+    name: Viral cross-border short-drama growth
+    merchant_category: short_drama
+    merchant_age_months: 14
+    base: {average_ticket_size: 11, platform_dependency: 0.45, available_merchant_balance: 170000}
+    periods:
+      P0_BASELINE: {mom_volume_growth: 0.18, refund_rate: 0.022, dispute_rate: 0.0065, fraud_loss_rate: 0.0028, cross_border_share: 0.35, prepaid_exposure_ratio: 0.16}
+      P1_EARLY_SIGNAL: {monthly_attempted_payment_volume: 2200000, mom_volume_growth: 1.20, payment_approval_rate: 0.952, refund_rate: 0.024, dispute_rate: 0.0072, fraud_loss_rate: 0.0035, cross_border_share: 0.48, prepaid_exposure_ratio: 0.19, complaint_rate: 0.004}
+      P2_STRESS: {monthly_attempted_payment_volume: 3800000, mom_volume_growth: 0.73, payment_approval_rate: 0.94, refund_rate: 0.032, dispute_rate: 0.0105, fraud_loss_rate: 0.0055, cross_border_share: 0.57, prepaid_exposure_ratio: 0.24, complaint_rate: 0.0062, data_confidence_level: low}
+      P3_OUTCOME: {monthly_attempted_payment_volume: 3200000, mom_volume_growth: -0.16, payment_approval_rate: 0.955, refund_rate: 0.023, dispute_rate: 0.0068, fraud_loss_rate: 0.0029, cross_border_share: 0.50, prepaid_exposure_ratio: 0.18, complaint_rate: 0.0038, data_confidence_level: high}
+
+  - scenario_key: SD-03
+    merchant_id: SYN-SD-03
+    name: Post-consumption dispute deterioration
+    merchant_category: short_drama
+    merchant_age_months: 20
+    base: {average_ticket_size: 13, cross_border_share: 0.20, data_confidence_level: high, available_merchant_balance: 130000}
+    periods:
+      P0_BASELINE: {refund_rate: 0.024, dispute_rate: 0.0070, fraud_loss_rate: 0.0024, complaint_rate: 0.0040, prepaid_exposure_ratio: 0.14, post_consumption_dispute_share: 0.45, content_integrity_indicator: 0.25, support_response_within_sla: 0.92}
+      P1_EARLY_SIGNAL: {refund_rate: 0.031, dispute_rate: 0.0092, complaint_rate: 0.0075, prepaid_exposure_ratio: 0.17, post_consumption_dispute_share: 0.57, content_integrity_indicator: 0.38, support_response_within_sla: 0.80}
+      P2_STRESS: {refund_rate: 0.048, dispute_rate: 0.0165, fraud_loss_rate: 0.0040, complaint_rate: 0.0140, prepaid_exposure_ratio: 0.23, post_consumption_dispute_share: 0.71, content_integrity_indicator: 0.62, support_response_within_sla: 0.61}
+      P3_OUTCOME: {refund_rate: 0.052, dispute_rate: 0.0210, fraud_loss_rate: 0.0045, complaint_rate: 0.0170, prepaid_exposure_ratio: 0.25, post_consumption_dispute_share: 0.76, content_integrity_indicator: 0.76, support_response_within_sla: 0.55, data_confidence_level: medium}
+
+  - scenario_key: AI-01
+    merchant_id: SYN-AI-01
+    name: Established AI subscription and credits
+    merchant_category: ai_subscription
+    merchant_age_months: 30
+    base: {average_ticket_size: 28, payment_approval_rate: 0.972, refund_rate: 0.015, dispute_rate: 0.0035, fraud_loss_rate: 0.0012, cross_border_share: 0.18, content_integrity_indicator: 0.12, platform_dependency: 0.25, service_reliability: 0.997, support_response_within_sla: 0.95, data_confidence_level: high, available_merchant_balance: 150000, renewal_disclosure_score: 0.96, renewal_dispute_share: 0.12}
+    periods:
+      P0_BASELINE: {mom_volume_growth: 0.08, prepaid_exposure_ratio: 0.10}
+      P1_EARLY_SIGNAL: {monthly_attempted_payment_volume: 1080000, refund_rate: 0.016, dispute_rate: 0.0038, prepaid_exposure_ratio: 0.11, service_reliability: 0.996}
+      P2_STRESS: {monthly_attempted_payment_volume: 1150000, refund_rate: 0.019, dispute_rate: 0.0048, prepaid_exposure_ratio: 0.12, service_reliability: 0.990, complaint_rate: 0.004}
+      P3_OUTCOME: {monthly_attempted_payment_volume: 1200000, refund_rate: 0.015, dispute_rate: 0.0034, prepaid_exposure_ratio: 0.10, service_reliability: 0.997}
+
+  - scenario_key: AI-02
+    merchant_id: SYN-AI-02
+    name: AI trial-to-paid renewal stress
+    merchant_category: ai_subscription
+    merchant_age_months: 10
+    base: {average_ticket_size: 24, cross_border_share: 0.22, content_integrity_indicator: 0.18, available_merchant_balance: 120000, renewal_disclosure_score: 0.85, renewal_dispute_share: 0.24}
+    periods:
+      P0_BASELINE: {refund_rate: 0.020, dispute_rate: 0.0055, fraud_loss_rate: 0.0018, complaint_rate: 0.0035, prepaid_exposure_ratio: 0.12}
+      P1_EARLY_SIGNAL: {mom_volume_growth: 0.45, refund_rate: 0.034, dispute_rate: 0.0095, complaint_rate: 0.0085, prepaid_exposure_ratio: 0.13, renewal_disclosure_score: 0.62, renewal_dispute_share: 0.61}
+      P2_STRESS: {mom_volume_growth: 0.20, refund_rate: 0.050, dispute_rate: 0.0082, complaint_rate: 0.0060, prepaid_exposure_ratio: 0.13, support_response_within_sla: 0.94, renewal_disclosure_score: 0.90, renewal_dispute_share: 0.34}
+      P3_OUTCOME: {mom_volume_growth: 0.10, refund_rate: 0.030, dispute_rate: 0.0050, complaint_rate: 0.0025, prepaid_exposure_ratio: 0.11, data_confidence_level: high, renewal_disclosure_score: 0.95, renewal_dispute_share: 0.20}
+
+  - scenario_key: AI-03
+    merchant_id: SYN-AI-03
+    name: AI account and API-key abuse
+    merchant_category: ai_api
+    merchant_age_months: 18
+    base: {average_ticket_size: 42, payment_approval_rate: 0.965, refund_rate: 0.012, dispute_rate: 0.0040, fraud_loss_rate: 0.0016, cross_border_share: 0.30, prepaid_exposure_ratio: 0.08, content_integrity_indicator: 0.16, data_confidence_level: high, available_merchant_balance: 160000, postpaid_usage_exposure_ratio: 0.06, usage_meter_reconciliation_rate: 0.995, anomalous_usage_share: 0.025, account_or_key_compromise_indicator: 0.10}
+    periods:
+      P0_BASELINE: {mom_volume_growth: 0.12}
+      P1_EARLY_SIGNAL: {monthly_attempted_payment_volume: 1350000, mom_volume_growth: 0.35, refund_rate: 0.014, dispute_rate: 0.0052, fraud_loss_rate: 0.0028, complaint_rate: 0.0045, anomalous_usage_share: 0.08, account_or_key_compromise_indicator: 0.38, usage_meter_reconciliation_rate: 0.98}
+      P2_STRESS: {monthly_attempted_payment_volume: 1700000, mom_volume_growth: 0.26, payment_approval_rate: 0.94, refund_rate: 0.018, dispute_rate: 0.0110, fraud_loss_rate: 0.0085, complaint_rate: 0.008, service_reliability: 0.94, postpaid_usage_exposure_ratio: 0.14, usage_meter_reconciliation_rate: 0.88, anomalous_usage_share: 0.18, account_or_key_compromise_indicator: 0.82}
+      P3_OUTCOME: {monthly_attempted_payment_volume: 1500000, mom_volume_growth: -0.12, payment_approval_rate: 0.965, refund_rate: 0.013, dispute_rate: 0.0043, fraud_loss_rate: 0.0020, complaint_rate: 0.003, service_reliability: 0.985, postpaid_usage_exposure_ratio: 0.07, usage_meter_reconciliation_rate: 0.99, anomalous_usage_share: 0.04, account_or_key_compromise_indicator: 0.18}
+
+  - scenario_key: WF-01
+    merchant_id: SYN-WF-01
+    name: Web-fiction creator obligations
+    merchant_category: web_fiction
+    merchant_age_months: 36
+    base: {average_ticket_size: 10, payment_approval_rate: 0.97, cross_border_share: 0.28, prepaid_exposure_ratio: 0.20, content_integrity_indicator: 0.18, service_reliability: 0.98, support_response_within_sla: 0.94, data_confidence_level: high, available_merchant_balance: 190000}
+    periods:
+      P0_BASELINE: {mom_volume_growth: 0.08, refund_rate: 0.018, dispute_rate: 0.0040, fraud_loss_rate: 0.0014}
+      P1_EARLY_SIGNAL: {mom_volume_growth: 0.22, refund_rate: 0.022, dispute_rate: 0.0050, prepaid_exposure_ratio: 0.23, content_integrity_indicator: 0.28}
+      P2_STRESS: {mom_volume_growth: -0.08, refund_rate: 0.035, dispute_rate: 0.0090, prepaid_exposure_ratio: 0.34, content_integrity_indicator: 0.56, complaint_rate: 0.009, available_merchant_balance: 120000}
+      P3_OUTCOME: {mom_volume_growth: 0.04, refund_rate: 0.022, dispute_rate: 0.0048, prepaid_exposure_ratio: 0.22, content_integrity_indicator: 0.24, complaint_rate: 0.003, available_merchant_balance: 200000}
+
+  - scenario_key: GM-01
+    merchant_id: SYN-GM-01
+    name: Web game store with transferable items
+    merchant_category: games
+    merchant_age_months: 24
+    base: {average_ticket_size: 18, payment_approval_rate: 0.962, cross_border_share: 0.32, prepaid_exposure_ratio: 0.15, content_integrity_indicator: 0.15, virtual_asset_transferability: true, service_reliability: 0.98, data_confidence_level: high, available_merchant_balance: 160000}
+    periods:
+      P0_BASELINE: {mom_volume_growth: 0.15, refund_rate: 0.017, dispute_rate: 0.0055, fraud_loss_rate: 0.0022}
+      P1_EARLY_SIGNAL: {mom_volume_growth: 0.35, refund_rate: 0.020, dispute_rate: 0.0070, fraud_loss_rate: 0.0035, complaint_rate: 0.004}
+      P2_STRESS: {mom_volume_growth: 0.18, payment_approval_rate: 0.945, refund_rate: 0.028, dispute_rate: 0.0130, fraud_loss_rate: 0.0090, complaint_rate: 0.008, service_reliability: 0.95}
+      P3_OUTCOME: {mom_volume_growth: 0.05, payment_approval_rate: 0.96, refund_rate: 0.019, dispute_rate: 0.0058, fraud_loss_rate: 0.0025, complaint_rate: 0.003, service_reliability: 0.98}

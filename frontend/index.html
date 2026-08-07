@@ -1,61 +1,131 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Merchant Credit &amp; Reserve Decision Engine</title>
+    <meta name="description" content="An interactive strategy lab for balancing digital-goods payment risk, merchant liquidity, and sustainable platform volume." />
+    <title>Digital Goods Risk Strategy Lab</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="./styles.css" />
     <script src="./config.js"></script>
   </head>
   <body>
-    <div class="wrap">
-      <header class="masthead">
-        <p class="eyebrow">Portfolio laboratory · Phase 0 baseline</p>
-        <h1 class="brand">Merchant Credit &amp; Reserve Decision Engine</h1>
-        <p class="lede">
-          Explainable onboarding and periodic-review decisions for digital-product merchants —
-          approval action, expected-loss economics, and rolling-reserve recommendation.
-        </p>
-        <aside class="notice" role="note">
-          <strong>Public-data notice.</strong> Synthetic demonstration merchants only. Do not
-          upload real personal, customer, or confidential merchant data. Baseline outputs are
-          <em>illustrative</em> until Phase 2 validation evidence exists.
-        </aside>
-      </header>
+    <a class="skip-link" href="#lab">Skip to the lab</a>
+    <div class="ambient" aria-hidden="true"></div>
 
-      <main class="layout">
-        <section class="panel" aria-labelledby="controls-heading">
-          <h2 id="controls-heading">01 · Sample merchant</h2>
-          <label for="merchant-select">Load example</label>
-          <select id="merchant-select"></select>
-          <div class="controls">
-            <button type="button" class="primary" id="run-decision">Run decision</button>
-            <button type="button" id="check-health">Check API health</button>
+    <header class="site-header">
+      <a class="wordmark" href="#top" aria-label="Digital Goods Risk Strategy Lab home">
+        <span class="wordmark-mark">DG</span><span>Risk Strategy Lab</span>
+      </a>
+      <div class="header-meta">
+        <span>Strategy 0.3</span><span class="live-dot">Synthetic model</span>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="kicker">P1 · Payment platform decision research</p>
+          <h1>How much risk should a platform accept to preserve <em>sustainable growth?</em></h1>
+          <p class="hero-deck">A research demonstrator for emerging digital-goods merchants. It connects conduct, contingent exposure, and commercial value to an explainable control decision.</p>
+        </div>
+        <div class="hero-thesis" aria-label="Project thesis">
+          <span class="thesis-index">01 / Thesis</span>
+          <p>Risk is not ticket size alone. It is the interaction between fulfillment, prepaid obligations, merchant behavior, and the platform’s ability to absorb a failure.</p>
+          <a href="#lab">Enter decision lab <span aria-hidden="true">↘</span></a>
+        </div>
+      </section>
+
+      <section class="lab-shell" id="lab" aria-labelledby="lab-title">
+        <aside class="control-rail">
+          <div class="rail-heading">
+            <p class="kicker">Interactive model</p>
+            <h2 id="lab-title">Scenario controls</h2>
           </div>
-          <p class="status-line" id="status" aria-live="polite"></p>
-          <div id="error" class="error-box" hidden></div>
-          <div id="fallback" class="fallback" aria-live="polite"></div>
-        </section>
 
-        <section class="panel" aria-labelledby="decision-heading" id="result-panel">
-          <h2 id="decision-heading">02 · Decision</h2>
-          <p class="status-line" id="empty-state">Select a sample and run a decision.</p>
-          <div id="decision-root" hidden></div>
-        </section>
-      </main>
+          <label class="field-label" for="scenario-select">Merchant scenario</label>
+          <select id="scenario-select" aria-describedby="scenario-help"></select>
+          <p class="field-help" id="scenario-help">Eight synthetic cases across short drama, AI services, web fiction, and games.</p>
 
-      <footer>
-        Model <span id="footer-model">scorecard-0.1.0</span> · Policy
-        <span id="footer-policy">policy-0.1.0</span> · API base
-        <code id="footer-api"></code>
-      </footer>
-    </div>
+          <fieldset class="period-control">
+            <legend class="field-label">Observation period</legend>
+            <div class="period-track" id="period-track"></div>
+          </fieldset>
+
+          <div class="view-control" aria-label="Commercial view">
+            <span class="field-label">Commercial scale</span>
+            <div class="segmented" role="group">
+              <button class="is-active" id="view-dollar" type="button" aria-pressed="true">Illustrative $</button>
+              <button id="view-normalized" type="button" aria-pressed="false">Per $100</button>
+            </div>
+          </div>
+
+          <div class="scenario-facts" id="scenario-facts"></div>
+          <button type="button" class="run-button" id="run-model"><span>Run assessment</span><span aria-hidden="true">→</span></button>
+          <p class="api-status" id="status" aria-live="polite">Connecting to strategy API…</p>
+        </aside>
+
+        <div class="analysis-stage" id="analysis-stage" aria-live="polite" aria-busy="true">
+          <div class="stage-placeholder" id="stage-placeholder">
+            <span class="loader" aria-hidden="true"></span>
+            <p>Preparing scenario model</p>
+          </div>
+
+          <div id="results" hidden>
+            <section class="decision-header">
+              <div>
+                <p class="kicker" id="scenario-rubric">Synthetic merchant</p>
+                <h2 id="scenario-name">—</h2>
+              </div>
+              <div class="decision-stamp">
+                <span>Decision</span><strong id="decision-value">—</strong>
+              </div>
+            </section>
+
+            <section class="score-strip" aria-label="Assessment scores">
+              <article class="score risk"><div class="score-top"><span>Risk exposure</span><strong id="risk-score">0</strong></div><div class="score-bar"><i id="risk-bar"></i></div><small id="risk-level">—</small></article>
+              <article class="score"><div class="score-top"><span>Merchant strength</span><strong id="strength-score">0</strong></div><div class="score-bar"><i id="strength-bar"></i></div><small>Evidence of operating resilience</small></article>
+              <article class="score"><div class="score-top"><span>Commercial value</span><strong id="value-score">0</strong></div><div class="score-bar"><i id="value-bar"></i></div><small>Volume and growth potential</small></article>
+            </section>
+
+            <section class="waterfall-section">
+              <div class="section-heading">
+                <div><p class="kicker">02 · Unit economics</p><h3>From attempted volume to durable contribution</h3></div>
+                <p id="scale-label">$1M illustrative merchant view</p>
+              </div>
+              <div class="waterfall" id="waterfall"></div>
+            </section>
+
+            <section class="posture-section">
+              <div class="section-heading">
+                <div><p class="kicker">03 · Policy simulation</p><h3>Three ways to govern the same merchant</h3></div>
+                <p>Recommendation is constrained by risk appetite, then ranked by contribution.</p>
+              </div>
+              <div class="posture-grid" id="posture-grid"></div>
+            </section>
+
+            <section class="explanation-grid">
+              <article class="explanation-panel drivers"><p class="kicker">04 · Why this changed</p><h3>Decision logic</h3><div id="delta-explanation"></div><ul id="driver-list"></ul></article>
+              <article class="explanation-panel controls"><p class="kicker">05 · Control package</p><h3 id="reserve-headline">—</h3><div class="reserve-facts" id="reserve-facts"></div><ul id="control-list"></ul></article>
+            </section>
+          </div>
+
+          <div class="error-state" id="error-state" hidden>
+            <p class="kicker">Connection unavailable</p><h2>The model API could not be reached.</h2><p>Start the local FastAPI service or update <code>frontend/config.js</code> with the deployed API URL, then retry.</p><button type="button" id="retry">Retry connection</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="method-note">
+        <p class="kicker">Scope boundary</p>
+        <p>Direct web payments only. All merchants, indicators, policy effects, and dollar outcomes are synthetic and illustrative. This demonstrator is a strategy framework—not a production underwriting model.</p>
+        <div><span>Research posture</span><strong>Balanced growth</strong></div>
+      </section>
+    </main>
+
+    <footer><span>Charlene Yang · Portfolio research</span><span id="footer-api"></span></footer>
     <script src="./app.js" type="module"></script>
   </body>
 </html>

@@ -15,6 +15,7 @@ class Settings(BaseSettings):
     port: int = 8000
     log_level: str = "INFO"
     cors_origins: str = "http://127.0.0.1:5173,http://localhost:5173,http://127.0.0.1:3000,http://localhost:3000"
+    cors_origin_regex: str = r"^https?://(localhost|127\.0\.0\.1|0\.0\.0\.0|\[::1\])(:\d+)?$"
     max_batch_size: int = 50
 
     @property

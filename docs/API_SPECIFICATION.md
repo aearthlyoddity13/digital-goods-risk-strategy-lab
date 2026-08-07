@@ -13,7 +13,7 @@ Liveness and version metadata (`methodology_version`, `policy_version`, service 
 
 ### `GET /api/v1/archetypes`
 
-Returns synthetic archetypes and available period labels.
+Returns the eight versioned synthetic scenarios and four available period labels for each.
 
 ### `GET /api/v1/risk-factors`
 
@@ -26,8 +26,16 @@ Returns taxonomy factor catalog (codes, families, short descriptions).
 
 ### `POST /api/v1/compare`
 
-**Request:** `{ "baseline": {...}, "candidate": {...} }` scenario objects.  
+**Request:** baseline and candidate references: `{ "scenario_key", "period" }`.
 **Response:** both assessments plus `delta_explanation` summarizing why the decision/controls changed.
+
+### `POST /api/v1/compare-postures`
+
+**Request:** one `{ "scenario_key", "period" }` reference.
+
+**Response:** permissive, balanced-growth and conservative simulations with effective payment rates, residual risk, reserve settings, normalized economics, illustrative dollar economics, risk-appetite eligibility and a recommendation derived from the synthetic assumptions.
+
+Policy effects are versioned in `config/strategy/postures-0.1.0.yaml` and are explicitly illustrative.
 
 ### `GET /api/v1/methodology`
 
@@ -41,11 +49,12 @@ Structured `{ "error_code", "message", "request_id", "details" }`.
 
 `CORS_ORIGINS` comma-separated allowlist from environment. No wildcard default for production-like deploys.
 
-## Sample (target — available after Phase 4)
+## Samples
 
 ```bash
 curl -s http://127.0.0.1:8000/health | python3 -m json.tool
 curl -s http://127.0.0.1:8000/api/v1/methodology | python3 -m json.tool
+curl -s http://127.0.0.1:8000/api/v1/archetypes | python3 -m json.tool
 ```
 
 ## Legacy

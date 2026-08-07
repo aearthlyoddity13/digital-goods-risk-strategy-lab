@@ -4,6 +4,8 @@
 **Type:** Explainable rules-and-score strategy demonstrator  
 **Not:** A statistically validated machine-learning model
 
+**Governing posture:** Balanced growth. See [RISK_APPETITE_AND_OBJECTIVE.md](RISK_APPETITE_AND_OBJECTIVE.md). Commercial value may influence control selection only after non-negotiable legitimacy, legal, sanctions and severe-integrity boundaries are satisfied.
+
 ---
 
 ## 1. Decisions
@@ -44,6 +46,8 @@ Illustrative score 0–100 (higher = more concern) from weighted components, the
 | High refund rate × weak reliability / support proxies | Refunds may migrate to chargebacks |
 
 Component families (illustrative weights to be encoded in YAML): payment quality, growth/volatility, structure (subscription/prepaid/transfer), integrity/content, maturity/confidence, geography/cross-border.
+
+The 0–100 score is a summary aid, not the complete decision. The implementation must also expose separate risk-exposure, merchant-strength and commercial-value assessments. It should select the least-restrictive effective control package consistent with the balanced-growth appetite.
 
 ## 4. Hard rules (illustrative)
 
