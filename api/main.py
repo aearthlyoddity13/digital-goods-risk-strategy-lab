@@ -55,6 +55,21 @@ app.include_router(merchants.router)
 app.include_router(strategy.router)
 
 
+@app.get("/", include_in_schema=False)
+def root() -> dict[str, object]:
+    """Human-readable service discovery for the deployed API origin."""
+    return {
+        "service": "Digital Goods Merchant Risk Strategy Lab API",
+        "status": "ok",
+        "health": "/health",
+        "documentation": "/docs",
+        "methodology": "/api/v1/methodology",
+        "data_boundary": (
+            "Aggregated synthetic demonstration data only; not for production merchant decisions."
+        ),
+    }
+
+
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(
     request: Request, exc: RequestValidationError

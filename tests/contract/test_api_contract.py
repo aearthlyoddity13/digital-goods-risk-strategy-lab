@@ -21,9 +21,19 @@ def test_health_contract() -> None:
     body = r.json()
     assert body["status"] == "ok"
     assert body["api_version"] == "v1"
-    assert "model_version" in body
-    assert "policy_version" in body
+    assert body["model_version"] == "strategy-0.4.0"
+    assert body["policy_version"] == "balanced-growth-0.2.0"
     assert "X-Request-ID" in r.headers
+
+
+def test_root_discovers_public_api_without_exposing_internal_state() -> None:
+    r = client.get("/")
+    assert r.status_code == 200
+    body = r.json()
+    assert body["status"] == "ok"
+    assert body["health"] == "/health"
+    assert body["documentation"] == "/docs"
+    assert "synthetic" in body["data_boundary"].lower()
 
 
 def test_decision_contract_approve_sample() -> None:

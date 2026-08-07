@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 - Publication-readiness audit covering approved claims, source scope, required live destinations, repository risk and go/no-go criteria.
 - Vercel serverless entry point, explicit function-bundle rules and deployment runbook for the portfolio-facing HTTPS API.
 - Render-specific deployment files removed after selecting Vercel as the single public hosting path; Docker remains an optional local/container fallback.
+- Public API discovery response and active strategy/policy metadata on the health endpoint.
 
 ## [0.6.0-research-model-alignment] — 2026-08-08
 
