@@ -1,0 +1,13 @@
+.git
+.github
+.venv
+venv
+tests
+docs
+frontend
+docker
+outputs
+.env
+.env.*
+.DS_Store
+Project Brief - Updated.docx

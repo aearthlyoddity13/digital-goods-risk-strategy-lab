@@ -1,0 +1,9 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "functions": {
+    "app.py": {
+      "includeFiles": "{api/**,src/**,config/**,data/**}",
+      "excludeFiles": "{tests/**,docs/**,frontend/**,docker/**,.venv/**,outputs/**}"
+    }
+  }
+}

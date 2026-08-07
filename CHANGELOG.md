@@ -10,7 +10,8 @@ All notable changes to this project will be documented in this file.
 - Single-route MECE architecture connecting the general framework, category applications, scenario evidence, interactive lab and governance.
 - Copy-ready Cursor prompt for integrating P1 into the portfolio without exposing internal project artifacts.
 - Publication-readiness audit covering approved claims, source scope, required live destinations, repository risk and go/no-go criteria.
-- Render Blueprint, hardened Docker runtime and deployment runbook for the portfolio-facing HTTPS API.
+- Vercel serverless entry point, explicit function-bundle rules and deployment runbook for the portfolio-facing HTTPS API.
+- Render-specific deployment files removed after selecting Vercel as the single public hosting path; Docker remains an optional local/container fallback.
 
 ## [0.6.0-research-model-alignment] — 2026-08-08
 
