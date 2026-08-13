@@ -103,11 +103,32 @@ class Driver(BaseModel):
     value: float | str | None = None
 
 
+class HorizonExposure(BaseModel):
+    horizon_days: int = Field(ge=0, le=180)
+    expected_payment_loss: float = Field(ge=0)
+    stressed_payment_loss: float = Field(ge=0)
+    contingent_obligation_exposure: float = Field(ge=0)
+    postpaid_usage_exposure: float = Field(ge=0)
+    gross_stressed_exposure: float = Field(ge=0)
+    coverage_target: float = Field(ge=0, le=1)
+    target_protection: float = Field(ge=0)
+    available_merchant_balance: float = Field(ge=0)
+    existing_reserve: float = Field(ge=0)
+    incremental_protection_gap: float = Field(ge=0)
+    implied_reserve_rate: float = Field(ge=0, le=1)
+
+
 class ReserveRecommendation(BaseModel):
     rate: float = Field(ge=0, le=1)
     amount: float = Field(ge=0)
     holding_days: int = Field(ge=0, le=180)
     rationale: list[str]
+    coverage_target: float = Field(default=0.95, ge=0, le=1)
+    gross_stressed_exposure: float = Field(default=0, ge=0)
+    available_protection: float = Field(default=0, ge=0)
+    incremental_protection_gap: float = Field(default=0, ge=0)
+    capped_by_policy: bool = False
+    horizon_analysis: list[HorizonExposure] = Field(default_factory=list)
 
 
 class CommercialView(BaseModel):
@@ -170,10 +191,87 @@ class CompareResult(BaseModel):
     delta_explanation: list[str]
 
 
+class ExperimentCase(BaseModel):
+    case_id: str
+    label: str
+    changed_variables: dict[str, float | int | bool | str]
+
+
+class ExperimentManifest(BaseModel):
+    experiment_key: str
+    name: str
+    mechanism: str
+    hypothesis: str
+    variables_held_constant: list[str]
+    expected_direction: list[str]
+    alternative_explanation: str
+    falsification_check: str
+    cases: list[ExperimentCase]
+
+
+class ExperimentCaseResult(BaseModel):
+    case_id: str
+    label: str
+    changed_variables: dict[str, float | int | bool | str]
+    assessment: StrategyAssessmentResult
+
+
+class ExperimentResult(BaseModel):
+    manifest: ExperimentManifest
+    baseline: StrategyAssessmentResult
+    cases: list[ExperimentCaseResult]
+    observed_deltas: dict[str, dict[str, float]]
+    directional_check_passed: bool
+    interpretation: list[str]
+
+
+class CounterfactualChange(BaseModel):
+    variable: str
+    current_value: float | int | str | bool
+    threshold_value: float | int | str | bool
+    absolute_change: float | None = None
+    resulting_decision: DecisionAction
+    resulting_risk_score: float = Field(ge=0, le=100)
+    explanation: str
+
+
+class SensitivityCase(BaseModel):
+    case: str
+    assumption_changes: dict[str, float]
+    decision: DecisionAction
+    risk_score: float = Field(ge=0, le=100)
+    reserve_amount: float = Field(ge=0)
+    reserve_rate: float = Field(ge=0, le=1)
+    control_adjusted_contribution: float
+
+
+class DecisionDiagnostics(BaseModel):
+    scenario_id: str
+    current_decision: DecisionAction
+    next_less_restrictive_decision: DecisionAction | None
+    binding_constraints: list[str]
+    counterfactual_changes: list[CounterfactualChange]
+    sensitivity_cases: list[SensitivityCase]
+    robustness: str
+    robustness_explanation: str
+    limitation: str
+
+
 class PolicyPosture(str, Enum):
     PERMISSIVE = "permissive"
     BALANCED_GROWTH = "balanced_growth"
     CONSERVATIVE = "conservative"
+
+
+class AppliedControl(BaseModel):
+    code: str
+    label: str
+    mechanism: str
+    applicability_basis: str
+    assumed_effects: dict[str, float]
+    monthly_cost: float = Field(ge=0)
+    friction_level: str
+    release_condition: str
 
 
 class PostureSimulationResult(BaseModel):
@@ -191,6 +289,9 @@ class PostureSimulationResult(BaseModel):
     dollar_view: CommercialView
     within_risk_appetite: bool
     assumption_version: str
+    applied_controls: list[AppliedControl] = Field(default_factory=list)
+    mechanism_coverage: list[str] = Field(default_factory=list)
+    total_monthly_control_cost: float = Field(default=0, ge=0)
 
 
 class PostureComparisonResult(BaseModel):

@@ -1,0 +1,106 @@
+experiment_version: short-drama-experiments-0.1.0
+disclaimer: >
+  Controlled synthetic demonstrations. Changed values are illustrative and do
+  not represent observed merchant or payment-platform performance.
+
+baseline:
+  merchant_id: SYN-SD-EXP
+  scenario_id: SD-EXP-BASE
+  merchant_category: short_drama
+  merchant_age_months: 18
+  monthly_attempted_payment_volume: 1000000
+  payment_approval_rate: 0.96
+  successful_fulfillment_rate: 0.99
+  average_ticket_size: 12
+  mom_volume_growth: 0.15
+  refund_rate: 0.020
+  dispute_rate: 0.006
+  fraud_loss_rate: 0.0025
+  complaint_rate: 0.003
+  cross_border_share: 0.35
+  prepaid_exposure_ratio: 0.12
+  outstanding_customer_obligation: 120000
+  content_integrity_indicator: 0.20
+  platform_dependency: 0.35
+  service_reliability: 0.98
+  support_response_within_sla: 0.92
+  data_confidence_level: high
+  purchased_coin_value: 300000
+  consumed_purchased_coin_value: 170000
+  refunded_purchased_coin_value: 10000
+  unused_purchased_coin_value: 120000
+  promotional_coin_value: 20000
+  post_consumption_dispute_share: 0.35
+  renewal_disclosure_score: 1.0
+  usage_meter_reconciliation_rate: 0.995
+  anomalous_usage_share: 0.02
+  account_or_key_compromise_indicator: 0.10
+  available_merchant_balance: 140000
+
+experiments:
+  - experiment_key: SD-X1-OBLIGATION
+    name: Unconsumed coin obligation
+    mechanism: contingent_obligation
+    hypothesis: A larger and longer-lived unconsumed coin balance should increase exposure protection without independently increasing credential-abuse controls.
+    variables_held_constant: [payment volume, approval, fraud, disputes, refunds, merchant tenure, evidence confidence, content continuity, cross-border share]
+    expected_direction: [gross stressed exposure increases, reserve amount increases, credential-abuse control applicability is unchanged]
+    alternative_explanation: A reserve change may be driven by merchant balance rather than the coin obligation if available protection also changes.
+    falsification_check: The experiment fails if obligation increases while the selected-horizon gross exposure and protection gap do not increase.
+    cases:
+      - case_id: LOW_OBLIGATION
+        label: Lower unused coin balance
+        changes: {prepaid_exposure_ratio: 0.08, outstanding_customer_obligation: 80000, purchased_coin_value: 300000, consumed_purchased_coin_value: 210000, refunded_purchased_coin_value: 10000, unused_purchased_coin_value: 80000}
+      - case_id: HIGH_OBLIGATION
+        label: Higher unused coin balance
+        changes: {prepaid_exposure_ratio: 0.32, outstanding_customer_obligation: 320000, purchased_coin_value: 420000, consumed_purchased_coin_value: 90000, refunded_purchased_coin_value: 10000, unused_purchased_coin_value: 320000}
+
+  - experiment_key: SD-X2-CREDENTIAL
+    name: Credential and account abuse
+    mechanism: credential_and_account_abuse
+    hypothesis: Stronger account-abuse signals should increase payment controls and modeled loss while leaving the customer-obligation principal unchanged.
+    variables_held_constant: [payment volume, coin obligation, merchant balance, content continuity, merchant tenure, cross-border share]
+    expected_direction: [risk exposure increases, payment-abuse controls activate, contingent obligation exposure is unchanged]
+    alternative_explanation: A risk increase could be caused by a changed dispute or obligation input if controls are not isolated correctly.
+    falsification_check: The experiment fails if the obligation component changes or payment-abuse controls do not activate in the stressed case.
+    cases:
+      - case_id: LOW_ABUSE
+        label: Established device and account pattern
+        changes: {fraud_loss_rate: 0.0015, anomalous_usage_share: 0.02, account_or_key_compromise_indicator: 0.08}
+      - case_id: HIGH_ABUSE
+        label: Novel-device and top-up velocity stress
+        changes: {fraud_loss_rate: 0.009, anomalous_usage_share: 0.20, account_or_key_compromise_indicator: 0.82}
+
+  - experiment_key: SD-X3-CONDUCT
+    name: Post-consumption recognition and conduct
+    mechanism: conduct_and_recognition
+    hypothesis: Weaker recognition and post-consumption evidence should increase dispute-oriented controls without being classified as stolen-credential abuse.
+    variables_held_constant: [payment volume, fraud loss, coin obligation, merchant balance, content continuity, account-compromise signal]
+    expected_direction: [dispute pressure increases, conduct controls activate, credential-abuse indicator is unchanged]
+    alternative_explanation: General customer dissatisfaction could also increase disputes, so the demonstration cannot prove intent.
+    falsification_check: The experiment fails if the model activates credential-abuse controls solely because post-consumption disputes increase.
+    cases:
+      - case_id: STRONG_EVIDENCE
+        label: Clear recognition and consumption evidence
+        changes: {dispute_rate: 0.0045, complaint_rate: 0.002, post_consumption_dispute_share: 0.25, usage_meter_reconciliation_rate: 0.997}
+      - case_id: WEAK_EVIDENCE
+        label: Weak recognition and consumption evidence
+        changes: {dispute_rate: 0.015, complaint_rate: 0.012, post_consumption_dispute_share: 0.78, usage_meter_reconciliation_rate: 0.88}
+
+  - experiment_key: SD-X4-INTERACTION
+    name: Rapid consumption under weak evidence
+    mechanism: interaction
+    hypothesis: Combined account abuse and weak entitlement evidence should trigger layered controls and human review beyond either isolated mechanism.
+    variables_held_constant: [payment volume, coin obligation, merchant balance, content continuity, merchant tenure, cross-border share]
+    expected_direction: [combined risk exceeds isolated cases, layered controls activate, decision escalates]
+    alternative_explanation: The escalation may reflect additive thresholds rather than a true statistical interaction; the project should describe it as a policy interaction.
+    falsification_check: The experiment fails if the combined case does not add controls or escalation beyond the isolated cases.
+    cases:
+      - case_id: ACCOUNT_ONLY
+        label: Account abuse with reliable entitlement evidence
+        changes: {fraud_loss_rate: 0.007, anomalous_usage_share: 0.16, account_or_key_compromise_indicator: 0.72, usage_meter_reconciliation_rate: 0.995, complaint_rate: 0.003}
+      - case_id: EVIDENCE_ONLY
+        label: Weak entitlement evidence without account abuse
+        changes: {fraud_loss_rate: 0.0025, anomalous_usage_share: 0.02, account_or_key_compromise_indicator: 0.10, usage_meter_reconciliation_rate: 0.86, complaint_rate: 0.010}
+      - case_id: COMBINED
+        label: Account abuse with weak entitlement evidence
+        changes: {fraud_loss_rate: 0.007, anomalous_usage_share: 0.16, account_or_key_compromise_indicator: 0.72, usage_meter_reconciliation_rate: 0.86, complaint_rate: 0.010}

@@ -10,9 +10,14 @@ from merchant_risk.strategy.assessment import (
     POLICY_VERSION,
     assess,
 )
+from merchant_risk.strategy.diagnostics import diagnose
+from merchant_risk.strategy.experiments import list_experiments, run_experiment
 from merchant_risk.strategy.models import (
     CompareRequest,
     CompareResult,
+    DecisionDiagnostics,
+    ExperimentManifest,
+    ExperimentResult,
     PostureComparisonResult,
     ScenarioReference,
     StrategyAssessmentInput,
@@ -32,6 +37,19 @@ def create_strategy_assessment(body: StrategyAssessmentInput) -> StrategyAssessm
 @router.get("/archetypes")
 def get_archetypes() -> dict[str, object]:
     return {"catalog_version": "scenarios-0.1.0", "items": list_scenarios()}
+
+
+@router.get("/experiments", response_model=list[ExperimentManifest])
+def get_experiments() -> list[ExperimentManifest]:
+    return list_experiments()
+
+
+@router.get("/experiments/{experiment_key}", response_model=ExperimentResult)
+def get_experiment_result(experiment_key: str) -> ExperimentResult:
+    try:
+        return run_experiment(experiment_key)
+    except KeyError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
 
 
 @router.post("/compare", response_model=CompareResult)
@@ -86,6 +104,15 @@ def compare_policy_postures(body: ScenarioReference) -> PostureComparisonResult:
     except KeyError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
     return compare_postures(merchant)
+
+
+@router.post("/diagnostics", response_model=DecisionDiagnostics)
+def get_decision_diagnostics(body: ScenarioReference) -> DecisionDiagnostics:
+    try:
+        merchant = get_scenario(body.scenario_key, body.period)
+    except KeyError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    return diagnose(merchant)
 
 
 @router.get("/methodology")

@@ -21,7 +21,7 @@ def test_health_contract() -> None:
     body = r.json()
     assert body["status"] == "ok"
     assert body["api_version"] == "v1"
-    assert body["model_version"] == "strategy-0.4.0"
+    assert body["model_version"] == "strategy-0.5.0"
     assert body["policy_version"] == "balanced-growth-0.2.0"
     assert "X-Request-ID" in r.headers
 

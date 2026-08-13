@@ -1,53 +1,171 @@
-posture_version: postures-0.2.0
+posture_version: postures-0.3.0
 disclaimer: >
-  All policy effects are synthetic demonstration assumptions. They are not
-  calibrated estimates of any payment platform's control performance.
+  All control effects and costs are synthetic demonstration assumptions. They
+  are not calibrated estimates of any payment platform's control performance.
 
 risk_appetite:
   maximum_residual_risk_score: 55
   balanced_growth_near_equivalence_share: 0.005
 
-commercial_assumptions:
-  # Synthetic probability that an uncovered customer-obligation gap becomes
-  # an economic loss during the modeled monthly horizon.
-  contingent_exposure_realization_rate: 0.10
+control_library:
+  baseline_monitoring:
+    label: Baseline transaction monitoring
+    mechanism: baseline
+    applies_when: always
+    approval_rate_delta: 0.002
+    fraud_loss_multiplier: 0.98
+    dispute_rate_multiplier: 1.00
+    refund_rate_multiplier: 1.00
+    monthly_cost: 150
+    friction_level: low
+    release_condition: Remains part of standard processing.
+
+  descriptor_and_receipt_clarity:
+    label: Descriptor and digital receipt clarity
+    mechanism: conduct_and_recognition
+    applies_when: conduct
+    approval_rate_delta: 0.000
+    fraud_loss_multiplier: 1.00
+    dispute_rate_multiplier: 0.92
+    refund_rate_multiplier: 1.02
+    monthly_cost: 120
+    friction_level: low
+    release_condition: Maintain while recurring or coin payments remain active.
+
+  device_velocity_controls:
+    label: Device, account and top-up velocity controls
+    mechanism: credential_and_account_abuse
+    applies_when: payment_abuse
+    approval_rate_delta: -0.004
+    fraud_loss_multiplier: 0.78
+    dispute_rate_multiplier: 0.97
+    refund_rate_multiplier: 1.00
+    monthly_cost: 300
+    friction_level: moderate
+    release_condition: Relax after stable authenticated top-up cohorts and lower anomalous usage.
+
+  step_up_authentication:
+    label: Step-up authentication for anomalous top-ups
+    mechanism: credential_and_account_abuse
+    applies_when: payment_abuse
+    approval_rate_delta: -0.012
+    fraud_loss_multiplier: 0.68
+    dispute_rate_multiplier: 0.95
+    refund_rate_multiplier: 1.00
+    monthly_cost: 420
+    friction_level: high
+    release_condition: Remove from low-risk cohorts after device and payment history mature.
+
+  entitlement_reconciliation:
+    label: Coin-ledger and entitlement reconciliation
+    mechanism: fulfillment_and_metering
+    applies_when: metering
+    approval_rate_delta: 0.000
+    fraud_loss_multiplier: 1.00
+    dispute_rate_multiplier: 0.88
+    refund_rate_multiplier: 0.92
+    monthly_cost: 260
+    friction_level: low
+    release_condition: Retain until payment, coin and episode-access ledgers reconcile consistently.
+
+  subscription_conduct_remediation:
+    label: Renewal consent and cancellation remediation
+    mechanism: subscription_conduct
+    applies_when: conduct
+    approval_rate_delta: 0.000
+    fraud_loss_multiplier: 1.00
+    dispute_rate_multiplier: 0.82
+    refund_rate_multiplier: 1.08
+    monthly_cost: 350
+    friction_level: low
+    release_condition: Release after verified disclosure, consent and cancellation evidence improves.
+
+  content_continuity_review:
+    label: Content-rights and continuity review
+    mechanism: content_continuity
+    applies_when: continuity
+    approval_rate_delta: -0.003
+    fraud_loss_multiplier: 1.00
+    dispute_rate_multiplier: 0.94
+    refund_rate_multiplier: 0.96
+    monthly_cost: 380
+    friction_level: moderate
+    release_condition: Release after rights and availability evidence remains stable.
+
+  obligation_protection:
+    label: Exposure-based obligation protection
+    mechanism: contingent_obligation
+    applies_when: obligation
+    approval_rate_delta: 0.000
+    fraud_loss_multiplier: 1.00
+    dispute_rate_multiplier: 1.00
+    refund_rate_multiplier: 1.00
+    monthly_cost: 180
+    friction_level: moderate
+    release_condition: Reduce as unconsumed balances fall and fulfillment evidence stabilizes.
+
+  processing_band:
+    label: Progressive processing band
+    mechanism: growth_and_uncertainty
+    applies_when: growth_uncertainty
+    approval_rate_delta: -0.010
+    fraud_loss_multiplier: 0.92
+    dispute_rate_multiplier: 0.96
+    refund_rate_multiplier: 1.00
+    monthly_cost: 220
+    friction_level: moderate
+    release_condition: Expand after stable performance through the observation window.
+
+  intensive_manual_review:
+    label: Intensive case review and restricted processing
+    mechanism: evidence_uncertainty
+    applies_when: material_uncertainty
+    approval_rate_delta: -0.025
+    fraud_loss_multiplier: 0.82
+    dispute_rate_multiplier: 0.90
+    refund_rate_multiplier: 0.95
+    monthly_cost: 750
+    friction_level: high
+    release_condition: Remove after required merchant, ownership and operating evidence is verified.
 
 postures:
   permissive:
     label: Permissive
-    approval_rate_delta: 0.010
-    fraud_loss_multiplier: 1.15
-    dispute_rate_multiplier: 1.10
-    refund_rate_multiplier: 0.95
-    monitoring_and_review_cost: 200
-    false_positive_volume_share: 0.002
-    reserve_rate_delta: -0.03
-    holding_days_delta: -14
-    residual_risk_multiplier: 1.15
-    description: Minimal friction and faster approved volume with greater residual exposure.
+    description: Low-friction controls limited to baseline monitoring and customer recognition.
+    controls:
+      - baseline_monitoring
+      - descriptor_and_receipt_clarity
+    reserve_coverage_target: 0.90
+    maximum_reserve_rate: 0.15
 
   balanced_growth:
     label: Balanced growth
-    approval_rate_delta: 0.000
-    fraud_loss_multiplier: 0.80
-    dispute_rate_multiplier: 0.85
-    refund_rate_multiplier: 1.05
-    monitoring_and_review_cost: 500
-    false_positive_volume_share: 0.008
-    reserve_rate_delta: 0.00
-    holding_days_delta: 0
-    residual_risk_multiplier: 0.82
-    description: Mechanism-specific controls with release conditions and moderate friction.
+    description: Targeted controls matched to diagnosed mechanisms with explicit release conditions.
+    controls:
+      - baseline_monitoring
+      - descriptor_and_receipt_clarity
+      - device_velocity_controls
+      - entitlement_reconciliation
+      - subscription_conduct_remediation
+      - content_continuity_review
+      - obligation_protection
+      - processing_band
+    reserve_coverage_target: 0.95
+    maximum_reserve_rate: 0.20
 
   conservative:
     label: Conservative
-    approval_rate_delta: -0.030
-    fraud_loss_multiplier: 0.60
-    dispute_rate_multiplier: 0.70
-    refund_rate_multiplier: 0.90
-    monitoring_and_review_cost: 900
-    false_positive_volume_share: 0.030
-    reserve_rate_delta: 0.05
-    holding_days_delta: 30
-    residual_risk_multiplier: 0.62
-    description: Lower residual exposure with higher false-positive and liquidity costs.
+    description: Higher-friction protection for material uncertainty or combined mechanism stress.
+    controls:
+      - baseline_monitoring
+      - descriptor_and_receipt_clarity
+      - device_velocity_controls
+      - step_up_authentication
+      - entitlement_reconciliation
+      - subscription_conduct_remediation
+      - content_continuity_review
+      - obligation_protection
+      - processing_band
+      - intensive_manual_review
+    reserve_coverage_target: 0.99
+    maximum_reserve_rate: 0.25

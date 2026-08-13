@@ -7,12 +7,12 @@ from merchant_risk.strategy.commercial import calculate_commercial_view
 from merchant_risk.strategy.models import (
     DataConfidence,
     Driver,
-    ReserveRecommendation,
     StrategyAssessmentInput,
     StrategyAssessmentResult,
 )
+from merchant_risk.strategy.reserve import recommend_exposure_reserve
 
-METHODOLOGY_VERSION = "strategy-0.4.0"
+METHODOLOGY_VERSION = "strategy-0.5.0"
 POLICY_VERSION = "balanced-growth-0.2.0"
 DISCLAIMER = (
     "Demonstration data: aggregated and synthetic. No confidential merchant, customer "
@@ -178,24 +178,9 @@ def assess(m: StrategyAssessmentInput) -> StrategyAssessmentResult:
             for control in controls
         ]
 
-    reserve_rate = 0.0
-    holding_days = 0
-    rationale: list[str] = []
-    if decision == DecisionAction.APPROVE_WITH_CONTROLS:
-        reserve_rate, holding_days = 0.05, 30
-    elif decision == DecisionAction.MANUAL_REVIEW:
-        reserve_rate, holding_days = 0.10, 45
-    if m.prepaid_exposure_ratio >= 0.25 and decision != DecisionAction.DECLINE:
-        reserve_rate += 0.03
-        rationale.append("Outstanding customer obligations increase contingent exposure.")
-    if m.content_integrity_indicator >= 0.60 and decision != DecisionAction.DECLINE:
-        reserve_rate += 0.03
-        holding_days = max(holding_days, 60)
-        rationale.append("Integrity deterioration can interrupt fulfillment and cash flow.")
-    reserve_rate = min(reserve_rate, 0.20)
-    if reserve_rate and not rationale:
-        rationale.append("Temporary protection while performance evidence accumulates.")
-    reserve_amount = m.monthly_attempted_payment_volume * m.payment_approval_rate * reserve_rate
+    reserve = recommend_exposure_reserve(m, decision)
+    reserve_rate = reserve.rate
+    holding_days = reserve.holding_days
 
     normalized = calculate_commercial_view(
         m, scale=100, reserve_rate=reserve_rate, holding_days=holding_days
@@ -294,12 +279,7 @@ def assess(m: StrategyAssessmentInput) -> StrategyAssessmentResult:
         primary_risk_drivers=drivers,
         protective_factors=protective,
         recommended_controls=controls,
-        reserve=ReserveRecommendation(
-            rate=round(reserve_rate, 4),
-            amount=round(reserve_amount, 2),
-            holding_days=holding_days,
-            rationale=rationale,
-        ),
+        reserve=reserve,
         normalized_commercial_view=normalized,
         dollar_commercial_view=dollar,
         conditions_to_reduce_controls=[

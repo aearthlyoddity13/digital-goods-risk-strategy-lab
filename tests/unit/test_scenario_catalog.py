@@ -15,7 +15,7 @@ def test_all_32_records_validate_and_assess() -> None:
     for item in list_scenarios():
         for period in item["periods"]:
             result = assess(get_scenario(str(item["scenario_key"]), str(period)))
-            assert result.methodology_version == "strategy-0.4.0"
+            assert result.methodology_version == "strategy-0.5.0"
             assert result.normalized_commercial_view.attempted_volume == 100
 
 

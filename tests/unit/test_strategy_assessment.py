@@ -116,3 +116,40 @@ def test_normalized_and_dollar_views_scale_consistently() -> None:
         / result.normalized_commercial_view.approved_volume
     )
     assert ratio == pytest.approx(10_000)
+
+
+def test_reserve_is_decomposed_across_all_horizons() -> None:
+    result = assess(StrategyAssessmentInput.model_validate(_payload()))
+    assert [item.horizon_days for item in result.reserve.horizon_analysis] == [30, 60, 90]
+    assert result.reserve.holding_days == 60
+    assert result.reserve.coverage_target == pytest.approx(0.95)
+    assert result.reserve.gross_stressed_exposure > 0
+
+
+def test_larger_obligation_increases_protection_gap_with_other_inputs_fixed() -> None:
+    baseline = _payload()
+    stressed = _payload()
+    stressed.update(
+        {
+            "purchased_coin_value": 500_000,
+            "consumed_purchased_coin_value": 190_000,
+            "refunded_purchased_coin_value": 10_000,
+            "unused_purchased_coin_value": 300_000,
+            "outstanding_customer_obligation": 300_000,
+            "prepaid_exposure_ratio": 0.30,
+        }
+    )
+    baseline_result = assess(StrategyAssessmentInput.model_validate(baseline))
+    stressed_result = assess(StrategyAssessmentInput.model_validate(stressed))
+    assert stressed_result.reserve.incremental_protection_gap > (
+        baseline_result.reserve.incremental_protection_gap
+    )
+    assert stressed_result.reserve.holding_days == 90
+
+
+def test_high_available_balance_can_cover_modeled_exposure() -> None:
+    payload = _payload()
+    payload["available_merchant_balance"] = 1_000_000
+    result = assess(StrategyAssessmentInput.model_validate(payload))
+    assert result.reserve.amount == 0
+    assert result.reserve.incremental_protection_gap == 0

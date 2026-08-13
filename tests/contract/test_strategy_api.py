@@ -68,12 +68,13 @@ def test_strategy_assess_contract() -> None:
     response = client.post("/api/v1/assess", json=_payload())
     assert response.status_code == 200
     body = response.json()
-    assert body["methodology_version"] == "strategy-0.4.0"
+    assert body["methodology_version"] == "strategy-0.5.0"
     assert "risk_exposure_score" in body
     assert "merchant_strength_score" in body
     assert "commercial_value_score" in body
     assert body["normalized_commercial_view"]["attempted_volume"] == 100
     assert body["dollar_commercial_view"]["attempted_volume"] == 1_000_000
+    assert [item["horizon_days"] for item in body["reserve"]["horizon_analysis"]] == [30, 60, 90]
 
 
 def test_methodology_contract() -> None:
@@ -90,6 +91,23 @@ def test_archetypes_contract() -> None:
     body = response.json()
     assert body["catalog_version"] == "scenarios-0.1.0"
     assert len(body["items"]) == 8
+
+
+def test_experiment_catalog_and_result_contract() -> None:
+    catalog_response = client.get("/api/v1/experiments")
+    assert catalog_response.status_code == 200
+    catalog = catalog_response.json()
+    assert len(catalog) == 4
+    assert all(item["falsification_check"] for item in catalog)
+
+    result_response = client.get("/api/v1/experiments/SD-X1-OBLIGATION")
+    assert result_response.status_code == 200
+    result = result_response.json()
+    assert result["directional_check_passed"] is True
+    assert {item["case_id"] for item in result["cases"]} == {
+        "LOW_OBLIGATION",
+        "HIGH_OBLIGATION",
+    }
 
 
 def test_compare_contract() -> None:
@@ -125,9 +143,26 @@ def test_compare_postures_contract() -> None:
     )
     assert response.status_code == 200
     body = response.json()
-    assert body["assumption_version"] == "postures-0.2.0"
+    assert body["assumption_version"] == "postures-0.3.0"
     assert {item["posture"] for item in body["postures"]} == {
         "permissive",
         "balanced_growth",
         "conservative",
+    }
+    assert all("applied_controls" in item for item in body["postures"])
+
+
+def test_diagnostics_contract() -> None:
+    response = client.post(
+        "/api/v1/diagnostics",
+        json={"scenario_key": "SD-03", "period": "P2_STRESS"},
+    )
+    assert response.status_code == 200
+    body = response.json()
+    assert body["current_decision"] == "MANUAL_REVIEW"
+    assert body["binding_constraints"]
+    assert len(body["sensitivity_cases"]) == 3
+    assert body["robustness"] in {
+        "robust_within_tested_range",
+        "assumption_sensitive",
     }
